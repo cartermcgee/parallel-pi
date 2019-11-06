@@ -26,6 +26,9 @@ public class TaskQueue {
 	return value;
     }
 
+    /**
+    * returns the size of the task queue
+    */
     public int getSize(){
 	return queue.size();
     }

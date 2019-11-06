@@ -26,14 +26,23 @@ public class ParalellPi {
 	System.out.println("\nPi computation took " + time + " ms");
     }
 
+    /**
+    * increments the digits completed counter
+    */
     public static synchronized void incrementDigitsCompleted(){
 	digitsCompleted++;
     }
 
+    /**
+    * returns the digits completed count
+    */
     public static synchronized int getDigitsCompleted(){
 	return digitsCompleted;
     }
 
+    /**
+    * Worker thread which takes a task queue and a result table to compute digits of pi and store the results
+    */
     private static class workerThread implements Runnable{
 	private TaskQueue tasks;
 	private ResultTable results;
