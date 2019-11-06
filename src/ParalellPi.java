@@ -15,8 +15,11 @@ public class ParalellPi {
 	    for (int i = 0; i < processorCount; i++){
 	        threads[i] = new Thread(new workerThread(myTaskQueue, myResultTable));
 	        threads[i].start();
-	        threads[i].join();
 	    }
+
+	    for (int i = 0; i < processorCount; i++){
+                threads[i].join();
+            }
 	}catch(Exception e){
 	    System.out.println("Something went wrong :( \n" + e);
 	}
@@ -52,6 +55,9 @@ public class ParalellPi {
 	    this.results = resultTable;
 	}
 
+	/**
+	* gets a digit of pi to compute, computes it, and stores it in a hash map until there are no more digits to be completed
+	*/
 	public void run(){
 	    Integer digit;
 	    Integer result;
@@ -62,9 +68,15 @@ public class ParalellPi {
 		result = bpp.getDecimal(digit.intValue());
 		results.setResult(digit, result);
 		incrementDigitsCompleted();
+		int c = getDigitsCompleted();
 
-		if(getDigitsCompleted() % 10 == 0){
+		if(c % 10 == 0){
                     System.out.print(".");
+
+		    if(c % 125 == 0){
+			System.out.println();
+		    }
+
                     System.out.flush();
 		}
 	    }
