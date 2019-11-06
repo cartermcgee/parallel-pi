@@ -14,4 +14,12 @@ public class ResultTable {
     public void setResult(Integer key, Integer value){
 	results.put(key, value);
     }
+
+    public void print(){
+	System.out.print("3.");
+
+	for(int i = 1; i <= 1000; i++){
+	    System.out.print(results.get(new Integer(i)));
+	}
+    }
 }

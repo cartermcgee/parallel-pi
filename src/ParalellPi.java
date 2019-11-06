@@ -1,17 +1,33 @@
 import java.util.*;
 
 public class ParalellPi {
+    private static int digitsCompleted;
+
     public static void main(String[] args){
 	TaskQueue myTaskQueue = new TaskQueue();
 	ResultTable myResultTable = new ResultTable();
 
 	int processorCount = Runtime.getRuntime().availableProcessors();
 	Thread[] threads = new Thread[processorCount];
-
-	for (int i = 0; i < processorCount; i++){
-	    threads[i] = new Thread(new workerThread(myTaskQueue, myResultTable));
-	    threads[i].start();
+	try{
+	    for (int i = 0; i < processorCount; i++){
+	        threads[i] = new Thread(new workerThread(myTaskQueue, myResultTable));
+	        threads[i].start();
+	        threads[i].join();
+	    }
+	}catch(Exception e){
+	    System.out.println("Something went wrong :( \n" + e);
 	}
+
+	myResultTable.print();
+    }
+
+    public static synchronized void incrementDigitsCompleted(){
+	digitsCompleted++;
+    }
+
+    public static synchronized int getDigitsCompleted(){
+	return digitsCompleted;
     }
 
     private static class workerThread implements Runnable{
@@ -30,10 +46,15 @@ public class ParalellPi {
 
 	    while(tasks.getSize() != 0){
 		digit = tasks.getTask();
-		result = bpp.getDecimal(digit);
+		result = bpp.getDecimal(digit.intValue());
 		results.setResult(digit, result);
+		incrementDigitsCompleted();
+
+		if(getDigitsCompleted() % 10 == 0){
+                    System.out.print(".");
+                    System.out.flush();
+		}
 	    }
 	}
-
     }
 }

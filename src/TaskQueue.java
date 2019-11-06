@@ -10,7 +10,7 @@ public class TaskQueue {
 	ArrayList<Integer> digitList = new ArrayList<Integer>();
 
 	for(int i = 1; i <= 1000; i++){
-	    digitList.add(i);
+	    digitList.add(new Integer(i));
 	}
 
 	java.util.Collections.shuffle(digitList);
