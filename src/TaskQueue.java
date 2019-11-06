@@ -14,13 +14,13 @@ public class TaskQueue {
 	}
 
 	java.util.Collections.shuffle(digitList);
-	this.queue = Collections.synchronizedList(new LinkedList(digitList));
+	this.queue = new LinkedList(digitList);
     }
 
     /**
     * Returns and removes first element of the TaskQueue list.
     */
-    public int getTask(){
+    public synchronized int getTask(){
 	int value = (Integer) queue.get(0);
 	queue.remove(0);
 	return value;
@@ -29,7 +29,7 @@ public class TaskQueue {
     /**
     * returns the size of the task queue
     */
-    public int getSize(){
+    public synchronized int getSize(){
 	return queue.size();
     }
 }

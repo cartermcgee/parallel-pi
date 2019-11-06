@@ -1,8 +1,6 @@
 import java.util.*;
 
 public class ParalellPi {
-    private static int digitsCompleted;
-
     public static void main(String[] args){
 	TaskQueue myTaskQueue = new TaskQueue();
 	ResultTable myResultTable = new ResultTable();
@@ -10,6 +8,7 @@ public class ParalellPi {
 	int processorCount = Runtime.getRuntime().availableProcessors();
 	Thread[] threads = new Thread[processorCount];
 	long begin = System.currentTimeMillis();
+	System.out.print("\nCalculating Pi");
 
 	try{
 	    for (int i = 0; i < processorCount; i++){
@@ -26,21 +25,7 @@ public class ParalellPi {
 
 	long time = System.currentTimeMillis() - begin;
 	myResultTable.print();
-	System.out.println("\nPi computation took " + time + " ms");
-    }
-
-    /**
-    * increments the digits completed counter
-    */
-    public static synchronized void incrementDigitsCompleted(){
-	digitsCompleted++;
-    }
-
-    /**
-    * returns the digits completed count
-    */
-    public static synchronized int getDigitsCompleted(){
-	return digitsCompleted;
+	System.out.println("\n\nPi computation took " + time + " ms");
     }
 
     /**
@@ -62,21 +47,16 @@ public class ParalellPi {
 	    Integer digit;
 	    Integer result;
 	    Bpp bpp = new Bpp();
+	    int c = tasks.getSize();
 
-	    while(tasks.getSize() != 0){
+	    while(c != 0){
 		digit = tasks.getTask();
-		result = bpp.getDecimal(digit.intValue());
-		results.setResult(digit, result);
-		incrementDigitsCompleted();
-		int c = getDigitsCompleted();
+		result = bpp.getDecimal(digit);
+		results.setResult(digit.toString(), result);
+		c = tasks.getSize();
 
 		if(c % 10 == 0){
-                    System.out.print(".");
-
-		    if(c % 125 == 0){
-			System.out.println();
-		    }
-
+		    System.out.print(".");
                     System.out.flush();
 		}
 	    }
