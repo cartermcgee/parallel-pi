@@ -16,7 +16,7 @@ public class ResultTable {
     }
 
     public void print(){
-	System.out.print("3.");
+	System.out.print("\n3.");
 
 	for(int i = 1; i <= 1000; i++){
 	    System.out.print(results.get(new Integer(i)));

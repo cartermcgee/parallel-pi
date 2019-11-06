@@ -9,6 +9,8 @@ public class ParalellPi {
 
 	int processorCount = Runtime.getRuntime().availableProcessors();
 	Thread[] threads = new Thread[processorCount];
+	long begin = System.currentTimeMillis();
+
 	try{
 	    for (int i = 0; i < processorCount; i++){
 	        threads[i] = new Thread(new workerThread(myTaskQueue, myResultTable));
@@ -19,7 +21,9 @@ public class ParalellPi {
 	    System.out.println("Something went wrong :( \n" + e);
 	}
 
+	long time = System.currentTimeMillis() - begin;
 	myResultTable.print();
+	System.out.println("\nPi computation took " + time + " ms");
     }
 
     public static synchronized void incrementDigitsCompleted(){
